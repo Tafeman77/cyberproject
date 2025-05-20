@@ -7,10 +7,10 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Check if required tools are installed
-if ! command -v arp-scan &> /dev/null; then
-    echo "arp-scan is not installed. Please install it (e.g., sudo apt install arp-scan)."
-    exit 1
-fi
+# if ! command -v arp-scan &> /dev/null; then
+#    echo "arp-scan is not installed. Please install it (e.g., sudo apt install arp-scan)."
+#    exit 1
+# fi
 
 if ! command -v nmap &> /dev/null; then
     echo "nmap is not installed. Please install it (e.g., sudo apt install nmap)."
@@ -75,14 +75,14 @@ if ! validate_cidr "$cidr_part"; then
 fi
 
 TIMESTAMP=$(date +%F_%H-%M-%S)
-ARP_OUTPUT="arp_scan_$TIMESTAMP.txt"
+# ARP_OUTPUT="arp_scan_$TIMESTAMP.txt"
 NMAP_OUTPUT_DIR="nmap_scans_$TIMESTAMP"
 LIVE_HOSTS="live_hosts_$TIMESTAMP.txt"
 
 # Create a directory for Nmap output
 mkdir -p "$NMAP_OUTPUT_DIR"
 
-echo "Starting ARP scan on $TARGET_NETWORK..."
+echo "Starting device scan on $TARGET_NETWORK..."
 
 # Run arp-scan and extract IP addresses of live hosts
 # arp-scan --interface=eth0 "$TARGET_NETWORK" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | sort -u > "$LIVE_HOSTS"
