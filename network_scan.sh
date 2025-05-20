@@ -85,7 +85,8 @@ mkdir -p "$NMAP_OUTPUT_DIR"
 echo "Starting ARP scan on $TARGET_NETWORK..."
 
 # Run arp-scan and extract IP addresses of live hosts
-arp-scan --interface=eth0 "$TARGET_NETWORK" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | sort -u > "$LIVE_HOSTS"
+# arp-scan --interface=eth0 "$TARGET_NETWORK" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | sort -u > "$LIVE_HOSTS"
+nmap -sn -n "$TARGET_NETWORK" | grep "Nmap scan report for" | awk '{print $5}' | sort -u > "$LIVE_HOSTS"
 
 # Check if any live hosts were found
 if [ ! -s "$LIVE_HOSTS" ]; then
