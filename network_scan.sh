@@ -112,7 +112,7 @@ echo "Found $(wc -l < "$LIVE_HOSTS") live hosts. Saving to $LIVE_HOSTS."
 
 if [ -s "$LIVE_HOSTS" ]; then
     echo "Starting Nmap stealth scans in parallel..."
-    cat "$LIVE_HOSTS" | xargs -P 5 -I {} nmap -n -D 192.168.0.114,192.168.0.115,192.168.0.116,192.168.0.117,192.168.0.118 --spoof-mac 00:50:56:9D:3C:C6 -sS -sV -O --host-timeout 5m {} -oN "$NMAP_OUTPUT_DIR/nmap_scan_{}.txt"
+    cat "$LIVE_HOSTS" | xargs -P 5 -I {} nmap -n -p 1-1000,3000-4000 -D 192.168.0.114,192.168.0.115,192.168.0.116,192.168.0.117,192.168.0.118 --spoof-mac 00:50:56:9D:3C:C6 -sS -sV -O --host-timeout 5m {} -oN "$NMAP_OUTPUT_DIR/nmap_scan_{}.txt"
     echo "All scans completed. Nmap results are stored in $NMAP_OUTPUT_DIR/"
 else
     echo "No live hosts found in $TARGET_NETWORK."
