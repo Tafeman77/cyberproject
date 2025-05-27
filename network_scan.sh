@@ -86,7 +86,7 @@ echo "Starting device scan on $TARGET_NETWORK..."
 
 # Run arp-scan and extract IP addresses of live hosts
 # arp-scan --interface=eth0 "$TARGET_NETWORK" | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" | sort -u > "$LIVE_HOSTS"
-nmap -sn -D 192.168.0.114,192.168.0.115,192.168.0.116,192.168.0.117,192.168.0.118 --spoof-mac 00:50:56:9D:E3:F9 -n "$TARGET_NETWORK" | grep "Nmap scan report for" | awk '{print $5}' | sort -u > "$LIVE_HOSTS"
+nmap -sn -D 192.168.0.114,192.168.0.115,192.168.0.116,192.168.0.117,192.168.0.118,ME --spoof-mac 00:50:56:9D:E3:F9 -n "$TARGET_NETWORK" | grep "Nmap scan report for" | awk '{print $5}' | sort -u > "$LIVE_HOSTS"
 
 # Check if any live hosts were found
 if [ ! -s "$LIVE_HOSTS" ]; then
@@ -112,7 +112,7 @@ echo "Found $(wc -l < "$LIVE_HOSTS") live hosts. Saving to $LIVE_HOSTS."
 
 if [ -s "$LIVE_HOSTS" ]; then
     echo "Starting Nmap stealth scans in parallel..."
-    cat "$LIVE_HOSTS" | xargs -P 5 -I {} nmap -n -p 1-1000,3000-4000 -D 192.168.0.114,192.168.0.115,192.168.0.116,192.168.0.117,192.168.0.118 --spoof-mac 00:50:56:9D:3C:C6 -sS -sV -O --host-timeout 5m {} -oN "$NMAP_OUTPUT_DIR/nmap_scan_{}.txt"
+    cat "$LIVE_HOSTS" | xargs -P 5 -I {} nmap -n -p 1-1000,3000-4000 -D 192.168.0.114,192.168.0.115,192.168.0.116,192.168.0.117,192.168.0.118,ME --spoof-mac 00:50:56:9D:3C:C6 -sS -sV -O --host-timeout 5m {} -oN "$NMAP_OUTPUT_DIR/nmap_scan_{}.txt"
     echo "All scans completed. Nmap results are stored in $NMAP_OUTPUT_DIR/"
 else
     echo "No live hosts found in $TARGET_NETWORK."
